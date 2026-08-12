@@ -8,6 +8,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import Spinner from "./Spinner";
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 
 export default function CreatePost() {
@@ -49,7 +51,7 @@ export default function CreatePost() {
 
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`http://localhost:5000/api/v1/users/posts/${editId}`, {
+            const response = await fetch(`${API_URL}/api/v1/users/posts/${editId}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -114,8 +116,8 @@ export default function CreatePost() {
 
         try {
 
-            const SubmitPostApi = `http://localhost:5000/api/v1/users/posts`;
-            const UpdatePostApi = `http://localhost:5000/api/v1/users/posts/${editId}`;
+            const SubmitPostApi = `${API_URL}/api/v1/users/posts`;
+            const UpdatePostApi = `${API_URL}/api/v1/users/posts/${editId}`;
             const method = EditStatus ? "PUT" : "POST";
             const FinalApi = EditStatus ? UpdatePostApi : SubmitPostApi;
             const res = await fetch(FinalApi, {

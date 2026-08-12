@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+   const API_URL = import.meta.env.VITE_API_URL;
 
 
 const SignUp = () => {
@@ -35,7 +36,7 @@ const SignUp = () => {
 
         try {
 
-            const response = await fetch("http://localhost:5000/api/v1/auth/register", {
+            const response = await fetch(`${API_URL}/api/v1/auth/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

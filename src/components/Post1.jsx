@@ -12,6 +12,7 @@ import isEqual from 'lodash.isEqual';
 import { RiDeleteBin7Line } from "react-icons/ri";
 import ThreeDotMenu from "./Threedot";
 import { formatDistanceToNow } from "date-fns";
+   const API_URL = import.meta.env.VITE_API_URL;
 
 
 
@@ -54,7 +55,7 @@ export default function Post({
     try {
       setdisabled(true);
       const token = localStorage.getItem("token");
-      const URL = `http://localhost:5000/api/v1/posts/${PostId}/like`;
+      const URL = `${API_URL}/api/v1/posts/${PostId}/like`;
       const response = await fetch(URL, {
         method: 'POST',
         headers: {
@@ -96,7 +97,7 @@ export default function Post({
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`http://localhost:5000/api/v1/posts/${PostId}/comment`, {
+        const response = await fetch(`${API_URL}/api/v1/posts/${PostId}/comment`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`
@@ -156,7 +157,7 @@ export default function Post({
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:5000/api/v1/posts/${PostId}/comment`, {
+      const response = await fetch(`${API_URL}/api/v1/posts/${PostId}/comment`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -207,7 +208,7 @@ export default function Post({
     setcomments(updatedComments);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/v1/posts/${commentId}/comment`, {
+      const response = await fetch(`${API_URL}/api/v1/posts/${commentId}/comment`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`

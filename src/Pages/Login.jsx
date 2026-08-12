@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { GoogleLogin } from '@react-oauth/google';
 import toast from "react-hot-toast";
+   const API_URL = import.meta.env.VITE_API_URL;
 
 
 
@@ -36,7 +37,7 @@ const Login = () => {
 
     // Login api hit krna
     try {
-      const response = await fetch('http://localhost:5000/api/v1/auth/login', {
+      const response = await fetch(`${API_URL}/api/v1/auth/login`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
@@ -78,7 +79,7 @@ const Login = () => {
       setLoading(true);
 
       // Google se mila credential token beckend pe bhejo
-      const response = await fetch('http://localhost:5000/api/v1/auth/google', {
+      const response = await fetch(`${API_URL}/api/v1/auth/google`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -5,6 +5,7 @@ import { usePost } from "../context/PostContext";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { MdMoreVert } from "react-icons/md"
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 
@@ -14,7 +15,8 @@ const ThreeDotMenu = ({ PostUserId, PostId }) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [openmodal, setopenmodal] = useState(false);
     const navigate = useNavigate();
-    
+ 
+
     useEffect(() => {
         if (openmodal) {
             document.body.classList.add('overflow-hidden');
@@ -36,7 +38,7 @@ const ThreeDotMenu = ({ PostUserId, PostId }) => {
 
         try{
             const token =  localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5000/api/v1/users/posts/${PostId}`,{
+            const response = await fetch(`${API_URL}/api/v1/users/posts/${PostId}`,{
                 method:"DELETE",
                 headers:{
                     Authorization:`Bearer ${token}`

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext, createContext } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 
@@ -63,7 +64,7 @@ export const PostProvider = ({ children }) => {
 
 
     const FetchPosts = async ({mode})=>{
-        const BaseUrl = `http://localhost:5000/api/v1/users/posts`;
+        const BaseUrl = `${API_URL}/api/v1/users/posts`;
         const finalUrl = mode === "mine"?`${BaseUrl}/${mode}`:BaseUrl;
         
         try{

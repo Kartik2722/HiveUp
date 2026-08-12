@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import toast from 'react-hot-toast';
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 // 1. Ek blank  cloud (conetext) bnaye
 
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
 
 
       try {
-        const response = await fetch('http://localhost:5000/api/v1/auth/me', {
+        const response = await fetch(`${API_URL}/api/v1/auth/me`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`
