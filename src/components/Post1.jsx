@@ -8,7 +8,7 @@ import { PulseLoader } from 'react-spinners';
 // import CommentBox from "./CommentBox";
 import { IoMdSend } from "react-icons/io";
 import { toast } from 'react-hot-toast';
-import isEqual from 'lodash.isEqual';
+import isEqual from 'lodash.isequal';
 import { RiDeleteBin7Line } from "react-icons/ri";
 import ThreeDotMenu from "./Threedot";
 import { formatDistanceToNow } from "date-fns";
