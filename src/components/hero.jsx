@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import sm from "../images/sm.png";
 import herosectionPic from '../images/HerosectionPic.jpg';
 import { useAuth } from "../context/AuthContext";
+import p1 from '../images/p1.avif';
+import p3 from '../images/p3.avif';
+import p2 from '../images/p2.avif';
 
 export default function Hero() {
   const {user} = useAuth();
@@ -39,11 +42,14 @@ export default function Hero() {
 
           <div className="flex items-center gap-2">
             <div className="flex -space-x-2">
-              {[1, 2, 3].map((i) => (
+              {[p1, p2, p3].map((i) => (
                 <div
                   key={i}
-                  className="w-8 h-8 rounded-full bg-gray-300 border-2 border-white"
-                />
+                  className="w-9 h-9 rounded-full  bg-gray-300 border-2 border-white flex items-center justify-center"
+
+                >
+                   <img src={i} alt="" className="object-cover w-9 h-9 rounded-full" />
+                </div>
               ))}
             </div>
             <span className="text-sm text-gray-500">Joined by 10k+ humans this week</span>
@@ -121,7 +127,9 @@ export default function Hero() {
             </p>
             <div className="flex -space-x-2">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="w-8 h-8 rounded-full bg-indigo-400 border-2 border-indigo-700" />
+                <div key={i} className="w-8 h-8 rounded-full bg-indigo-400 border-2 border-indigo-700" >
+                  
+                </div>
               ))}
               <div className="w-8 h-8 rounded-full bg-indigo-800 border-2 border-indigo-700 flex items-center justify-center text-xs">
                 +24
