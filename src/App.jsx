@@ -19,8 +19,7 @@ import { PostProvider } from './context/PostContext';
 import AllPostsPage from './components/AllPostsPage';
 import MyPostsPage from './components/MyPostsPage';
 import DeleteModal from './components/DeleteModal';
-
-
+import { SocketProvider } from './context/SocketContext';
 
 
 
@@ -34,6 +33,8 @@ function App() {
       <Toaster position='top-right' />
       <Router>
         <AuthProvider>
+       <SocketProvider>
+          
 
 
           <Routes>
@@ -111,7 +112,7 @@ function App() {
 
           </Routes>
 
-
+      </SocketProvider> 
         </AuthProvider>
 
       </Router>
