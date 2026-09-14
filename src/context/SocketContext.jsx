@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useAuth } from "./AuthContext";
 import toast from "react-hot-toast";
-const WS_API_URL = import.meta.env.REACT_APP_WS_URL;
+// const WS_API_URL = import.meta.env.REACT_APP_WS_URL;
 const API_URL = import.meta.env.VITE_API_URL
 
 const SocketContext = createContext();

@@ -2,6 +2,9 @@
 import React, { useState } from "react";
 import { useSocket } from "../context/SocketContext";
 import toast from "react-hot-toast";
+const API_URL = import.meta.env.VITE_API_URL
+
+
 
 export default function NotificationsPanel({ setopen }) {
   const { notifications, setNotifications, Loading, setUnreadCount } =
@@ -13,7 +16,7 @@ export default function NotificationsPanel({ setopen }) {
     // real app me: await fetch('/api/notifications/read-all', { method: 'PATCH', headers })
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("${API_URL}/api/v1/notifications/read-all", {
+      const res = await fetch(`${API_URL}/api/v1/notifications/read-all`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
