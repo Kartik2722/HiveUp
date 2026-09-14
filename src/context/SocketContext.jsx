@@ -17,7 +17,7 @@ export function SocketProvider({ children }) {
     const token = localStorage.getItem("token");
     try {
       setLoading(true);
-      const res = await fetch("${API_URL}/api/v1/notifications/", {
+      const res = await fetch(`${API_URL}/api/v1/notifications/`, {
         methods: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -33,7 +33,7 @@ export function SocketProvider({ children }) {
         setNotifications([]);
       }
     } catch (error) {
-      // console.log("error occur", error);
+      console.log("error occur", error);
       toast.error("Error Ocuur", error);
     }
   };
@@ -44,6 +44,7 @@ export function SocketProvider({ children }) {
     const fetchUnreadCount = async () => {
       if (!user) return;
       try {
+        // `${API_URL}/api/v1/notifications/unread`
         let token = localStorage.getItem("token");
         const res = await fetch(`${API_URL}/api/v1/notifications/unread`, {
           method: "GET",
