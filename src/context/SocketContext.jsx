@@ -33,8 +33,8 @@ export function SocketProvider({ children }) {
         setNotifications([]);
       }
     } catch (error) {
-      console.log("error occures", error);
-      toast.error("Error Ocuures", error);
+      // console.log("error occur", error);
+      toast.error("Error Ocuur", error);
     }
   };
 
@@ -74,6 +74,7 @@ export function SocketProvider({ children }) {
     function connect() {
       const ws = new WebSocket(`${WS_API_URL}?token=${token}`);
       wsRef.current = ws;
+      toast.success("connected to sockets: ",ws);
 
       ws.onmessage = (e) => {
         const data = JSON.parse(e.data);
