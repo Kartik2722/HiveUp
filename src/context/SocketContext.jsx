@@ -72,10 +72,9 @@ export function SocketProvider({ children }) {
     let retryTimer;
 
     function connect() {
-      const ws = new WebSocket(`${WS_API_URL}?token=${token}`);
+      const ws = new WebSocket(`wss://auth2026.onrender.com?token=${token}`);
       wsRef.current = ws;
-      toast.success("connected to sockets: ",ws);
-
+      // toast.success("connected to sockets: ",ws);
       ws.onmessage = (e) => {
         const data = JSON.parse(e.data);
         if (data.type === "NEW_NOTIFICATION") {
