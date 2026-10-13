@@ -2,31 +2,33 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import { useForm } from "react-hook-form";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const SignUp = () => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
-
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
+  const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm();
+  // const [formData, setFormData] = useState({
+  //   username: "",
+  //   email: "",
+  //   password: "",
+  // });
 
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // const handleChange = (e) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  const SubmitHandler = async (DATA) => {
+    console.log(DATA);
+    // e.preventDefault();
+    // setLoading(true);
     setMessage("");
 
     try {
@@ -35,7 +37,7 @@ const SignUp = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(DATA),
       });
 
       // logging respose object from register api
@@ -58,7 +60,7 @@ const SignUp = () => {
       toast.error(`${error}`);
       setMessage("Server connection failed.Is beckend running?");
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -80,17 +82,16 @@ const SignUp = () => {
         {/* Message Box */}
         {message && (
           <div
-            className={`p-3 mb-5 rounded-lg text-sm border ${
-              isError
-                ? "bg-red-500/20 text-red-400 border-red-500"
-                : "bg-green-500/20 text-green-400 border-green-500"
-            }`}
+            className={`p-3 mb-5 rounded-lg text-sm border ${isError
+              ? "bg-red-500/20 text-red-400 border-red-500"
+              : "bg-green-500/20 text-green-400 border-green-500"
+              }`}
           >
             {message}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit(SubmitHandler)} noValidate className="space-y-5">
           {/* Name Field */}
 
           <div>
@@ -100,14 +101,21 @@ const SignUp = () => {
 
             <input
               type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
+              // name="username"
+              // value={formData.username}
+              // onChange={handleChange}
               placeholder="e.g. rahul123"
-              required
+              // required
+
+              {...register("username", {
+                required: "username is required",
+                minLength: { value: 3, message: "Minimum 3 characters required" }
+              })}
               className="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholer-slate-400 focus:outline-none
                         focus:border-indigo-500 focus:ring-1 focus-1 focus:ring-indigo-500 transition"
             />
+
+            {errors.username && (<p className="text-red-400 text-sm mt-1">{errors.username.message}</p>)}
           </div>
 
           {/* Email Filed */}
@@ -117,13 +125,23 @@ const SignUp = () => {
             </label>
             <input
               type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
+              // name="email"
+              // value={formData.email}
+              // onChange={handleChange}
               placeholder="e.g. rahul@example.com"
-              required
+              // required
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  // regex for basic email validation
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Invalid email address"
+                }
+              })}
               className="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
             />
+
+            {errors.email && (<p className="text-red-400 text-sm mt-1">{errors.email.message}</p>)}
           </div>
           {/* Password field */}
 
@@ -133,24 +151,44 @@ const SignUp = () => {
             </label>
             <input
               type="password"
-              name="password"
-              value={formData.password}
+              // name="password"
+              // value={formData.password}
               placeholder="***********"
-              onChange={handleChange}
-              required
+              // onChange={handleChange}
+              // required
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters",
+                },
+
+                maxLength: {
+                  value: 30,
+                  message: "Password cannot exceed 30 characters",
+                },
+
+                pattern: {
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
+                  message:
+                    "Password must contain uppercase, lowercase, number and special character",
+                },
+              })}
               className="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none
                         focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
             />
+            {errors.password && (<p className="text-red-400 text-sm mt-1">{errors.password.message}</p>)}
           </div>
 
           {/* Submit Button*/}
           <button
             type="submit"
-            disabled={loading}
-            className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold
-                    transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+            disabled={isSubmitting}
+            className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 transition ease-in text-white rounded-lg font-semibold
+                    transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2 hover:cursor-pointer"
           >
-            {loading ? "creating account....." : "Sign Up"}
+            {isSubmitting ? "creating account....." : "Sign Up"}
           </button>
         </form>
 
