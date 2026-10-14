@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
     } else {
       try {
         // ${API_URL}
-        const response = await fetch(` ${API_URL}/api/v1/auth/me`, {
+        const response = await fetch(`${API_URL}/api/v1/auth/me`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
