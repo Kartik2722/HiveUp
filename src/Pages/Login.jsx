@@ -226,12 +226,12 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-6 relative bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+            className="w-full  h-12  relative bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
           >
 
             {loading ? (<div className=" ">
 
-              <div className="text-lg absolute inset-0 flex items-center justify-center gap-2  z-50 py-3">
+              <div className="text-lg absolute inset-0 flex items-center justify-center gap-2  z-50  ">
                
                 <ClipLoader color="white" size={25} speedMultiplier={1.5} cssOverride={{
                   borderWidth: "4px"
