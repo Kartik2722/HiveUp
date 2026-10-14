@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
+import googleIcon from "../images/google_icon.jpg";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -32,7 +33,8 @@ const Login = () => {
 
     // Login api hit krna
     try {
-      const response = await fetch(`${API_URL}/api/v1/auth/login`, {
+      // ${API_URL}
+      const response = await fetch(`http://localhost:5000/api/v1/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,19 +64,21 @@ const Login = () => {
   };
 
   // Google login success Handler
-  const handleGoogleSuccess = async (credentialResponse) => {
-    console.log("value1:", credentialResponse.credential);
+
+// credentialResponse
+  const handleGoogleSuccess = async (codeResponse) => {
+    console.log("google auth code: ",codeResponse);
     try {
       setLoading(true);
-
+// ${API_URL}
       // Google se mila credential token beckend pe bhejo
-      const response = await fetch(`${API_URL}/api/v1/auth/google`, {
+      const response = await fetch(`http://localhost:5000/api/v1/auth/google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          credential: credentialResponse.credential,
+          code: codeResponse.code,
         }),
       });
 
@@ -93,16 +97,27 @@ const Login = () => {
       // console.log(err);
       toast.error(`error : ${err}`);
       setMessage("Server connection failed.Is beckend failed");
-      // console.log(err);
+      console.log(err);
     } finally {
       setLoading(false);
     }
   };
 
   // Google Login Error Handler
-  const handleGoogleError = () => {
-    setMessage("Google Login failed.Please try again.");
+  const handleGoogleError = (error) => {
+    setMessage(`Google Login failed:${error}.`);
+    console.log(error);
   };
+
+
+    const login = useGoogleLogin({
+    // flow:'auth-code' rakhne se beckend ke liye secure code milta hai -- Authorization code 
+    flow:'auth-code',
+    //  ux_mode: 'redirect', // 👈 यह लाइन पॉप-अप की समस्या खत्म कर देगी
+    // redirect_uri: 'http://localhost:5173/login', // 👈 अपने फ्रंटएंड का बिल्कुल सटीक URL यहाँ डालें
+    onSuccess:handleGoogleSuccess,
+    onError:handleGoogleError
+  });
 
   const isError =
     message.toLowerCase().includes("error") ||
@@ -133,9 +148,10 @@ const Login = () => {
             {message}
           </div>
         )}
-        {/* ✅ NAYA: Google Login Component */}
+        
         <div className="flex justify-center mb-6">
-          <GoogleLogin
+           {/* ✅ NAYA: Google Login Component   ----  way-1  isme hum apna custom login button nahi bna skte hme readyamde use krna pdega and flow bhi alag hai way 2 se  */}    
+          {/* <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={handleGoogleError}
             theme="filled_black"
@@ -143,7 +159,22 @@ const Login = () => {
             text="continue_with"
             shape="rectangular"
             width="370"
-          />
+          /> */}
+
+          {/* Custom Google Login Button */}
+          <button
+            onClick={() => login()}
+            type="button"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3
+              bg-slate-700/50 hover:bg-slate-600/60 border border-slate-600
+              hover:border-slate-500 rounded-lg text-white font-medium
+              transition-all duration-200 hover:shadow-lg hover:shadow-indigo-500/10
+              active:scale-[0.98]"
+          >
+            <img src={googleIcon} alt="Google" className="w-5 h-5 rounded-sm object-contain" />
+            <span className="text-sm text-slate-200">Continue with Google</span>
+          </button>
+
         </div>
 
         {/* Divider */}
@@ -197,7 +228,11 @@ const Login = () => {
             disabled={loading}
             className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
           >
-            {loading ? "Logging in....." : "Login"}
+            {loading ?(  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    Logging in....
+                    <div className=" w-5 h-5 border-4 border-indigo-700/20 border-t-indigo-900 rounded-full animate-spin"></div>
+
+                  </div>  ) : "Login"}
           </button>
         </form>
 
