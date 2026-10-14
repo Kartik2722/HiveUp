@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useGoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
 import googleIcon from "../images/google_icon.jpg";
+import { ClipLoader } from "react-spinners";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -17,7 +18,7 @@ const Login = () => {
   });
 
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleChange = (e) => {
     setFormData({
@@ -65,12 +66,12 @@ const Login = () => {
 
   // Google login success Handler
 
-// credentialResponse
+  // credentialResponse
   const handleGoogleSuccess = async (codeResponse) => {
-    console.log("google auth code: ",codeResponse);
+    console.log("google auth code: ", codeResponse);
     try {
       setLoading(true);
-// ${API_URL}
+      // ${API_URL}
       // Google se mila credential token beckend pe bhejo
       const response = await fetch(` ${API_URL}/api/v1/auth/google`, {
         method: "POST",
@@ -110,13 +111,13 @@ const Login = () => {
   };
 
 
-    const login = useGoogleLogin({
+  const login = useGoogleLogin({
     // flow:'auth-code' rakhne se beckend ke liye secure code milta hai -- Authorization code 
-    flow:'auth-code',
+    flow: 'auth-code',
     //  ux_mode: 'redirect', // 👈 यह लाइन पॉप-अप की समस्या खत्म कर देगी
     // redirect_uri: 'http://localhost:5173/login', // 👈 अपने फ्रंटएंड का बिल्कुल सटीक URL यहाँ डालें
-    onSuccess:handleGoogleSuccess,
-    onError:handleGoogleError
+    onSuccess: handleGoogleSuccess,
+    onError: handleGoogleError
   });
 
   const isError =
@@ -139,18 +140,17 @@ const Login = () => {
 
         {message && (
           <div
-            className={`p-3 mb-5 rounded-lg text-sm border ${
-              isError
-                ? "bg-red-500/20 text-red-400 border-red-500"
-                : "bg-green-50/20 text-green-400 border-green-500"
-            }`}
+            className={`p-3 mb-5 rounded-lg text-sm border ${isError
+              ? "bg-red-500/20 text-red-400 border-red-500"
+              : "bg-green-50/20 text-green-400 border-green-500"
+              }`}
           >
             {message}
           </div>
         )}
-        
+
         <div className="flex justify-center mb-6">
-           {/* ✅ NAYA: Google Login Component   ----  way-1  isme hum apna custom login button nahi bna skte hme readyamde use krna pdega and flow bhi alag hai way 2 se  */}    
+          {/* ✅ NAYA: Google Login Component   ----  way-1  isme hum apna custom login button nahi bna skte hme readyamde use krna pdega and flow bhi alag hai way 2 se  */}
           {/* <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={handleGoogleError}
@@ -169,7 +169,7 @@ const Login = () => {
               bg-slate-700/50 hover:bg-slate-600/60 border border-slate-600
               hover:border-slate-500 rounded-lg text-white font-medium
               transition-all duration-200 hover:shadow-lg hover:shadow-indigo-500/10
-              active:scale-[0.98]"
+              active:scale-[0.98] hover:cursor-pointer"
           >
             <img src={googleIcon} alt="Google" className="w-5 h-5 rounded-sm object-contain" />
             <span className="text-sm text-slate-200">Continue with Google</span>
@@ -226,13 +226,19 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+            className="w-full py-6 relative bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
           >
-            {loading ?(  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    Logging in....
-                    <div className=" w-5 h-5 border-4 border-indigo-700/20 border-t-indigo-900 rounded-full animate-spin"></div>
 
-                  </div>  ) : "Login"}
+            {loading ? (<div className=" ">
+
+              <div className="text-lg absolute inset-0 flex items-center justify-center gap-2  z-50 py-3">
+               
+                <ClipLoader color="white" size={25} speedMultiplier={1.5} cssOverride={{
+                  borderWidth: "4px"
+                }} className="" />
+                 <span>Logging in....</span>
+              </div>
+            </div>) : "Login"}
           </button>
         </form>
 
